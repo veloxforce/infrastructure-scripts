@@ -1,58 +1,68 @@
 # Velox Infrastructure Scripts
 
-Self-updating infrastructure scripts for AI agents and development workflows.
+Self-healing infrastructure patterns for autonomous development environments.
 
-## Auto-Fetching Pattern
+## Philosophy: Infrastructure as URLs
 
-AI agents can automatically download and use these scripts:
+This repository enables the **auto-fetching pattern** - tools that install themselves when needed. 
+AI agents and developers can work in any environment without setup friction.
 
-```bash
-# Enhanced worktree creation with .env copying
-if [ ! -f "create_worktree.sh" ]; then
-  curl -o create_worktree.sh https://raw.githubusercontent.com/veloxforce/infrastructure-scripts/main/create_worktree.sh
-  chmod +x create_worktree.sh
-fi
-
-# Usage
-. ./create_worktree.sh my-feature-branch
-```
-
-## Available Scripts
-
-### `create_worktree.sh`
-Enhanced Git worktree creation that automatically:
-- Creates isolated worktree with new branch
-- Copies .env files automatically
-- Prevents environment setup issues
-- AI-agent friendly (no prompts)
-
-**Usage:**
-```bash
-. ./create_worktree.sh feature-name
-```
-
-## Adding to Projects
-
-Add this pattern to your project's `CLAUDE.md` or documentation:
-
-```markdown
-## Development Setup
-
-AI agents will auto-fetch required tools:
+## The Pattern
 
 ```bash
-if [ ! -f "create_worktree.sh" ]; then
-  curl -o create_worktree.sh https://raw.githubusercontent.com/veloxforce/infrastructure-scripts/main/create_worktree.sh
-  chmod +x create_worktree.sh
-fi
+# Tools auto-install when missing
+VELOX_INFRA="https://raw.githubusercontent.com/veloxforce/infrastructure-scripts/main"
+[ ! -f "TOOL_NAME" ] && curl -sO "$VELOX_INFRA/TOOL_NAME" && chmod +x TOOL_NAME
 ```
 
-This enables zero-setup development environments.
+This pattern enables:
+- ✅ **Zero-setup development** - No manual tool installation
+- ✅ **Self-healing environments** - Missing tools auto-restore  
+- ✅ **Autonomous AI agents** - Can work without human intervention
+- ✅ **Consistent tooling** - Same tools across all projects
+
+## Usage in Projects
+
+Add to your project documentation:
+
+```bash
+# Infrastructure tools auto-fetch from Velox standards
+VELOX_INFRA="https://raw.githubusercontent.com/veloxforce/infrastructure-scripts/main"
+
+# Example: Auto-fetch worktree creation tool
+[ ! -f "create_worktree.sh" ] && curl -sO "$VELOX_INFRA/create_worktree.sh" && chmod +x create_worktree.sh
 ```
+
+Then fetch any tool as needed. The pattern, not the tool list, is what matters.
+
+## How It Works
+
+1. **AI agent needs a tool** → Checks if it exists locally
+2. **Tool missing** → Auto-downloads from this repository
+3. **Tool available** → Continues with task
+4. **Environment self-heals** → No manual intervention needed
+
+This transforms development from "Did you install X?" to "Tools appear when needed."
+
+## Design Principles
+
+Scripts in this repository must be:
+
+1. **Autonomous** - No user prompts or interaction required
+2. **Idempotent** - Safe to run multiple times without side effects
+3. **Self-contained** - Minimal external dependencies
+4. **AI-friendly** - Clear output, predictable behavior, no ambiguity
 
 ## Contributing
 
-1. Test scripts locally
-2. Ensure they work without prompts (AI-friendly)
-3. Update this README
-4. Scripts are public - no secrets!
+Before adding a script, ask:
+- Does it follow the autonomous principles above?
+- Will it work without human intervention?
+- Is it genuinely reusable across different projects?
+- Does it solve a common infrastructure need?
+
+Focus on **patterns over implementations** - scripts should embody reusable principles, not project-specific solutions.
+
+---
+
+*This repository enables Infrastructure as Code to evolve into Infrastructure as URLs - where tools live as addressable, self-installing resources that autonomous systems can discover and use.*
