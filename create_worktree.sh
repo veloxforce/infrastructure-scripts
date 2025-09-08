@@ -76,10 +76,16 @@ if git worktree add "$WORKTREE_NAME" -b "$WORKTREE_NAME"; then
     info_message "Navigating into the new worktree directory: './$WORKTREE_NAME'..."
     cd "$WORKTREE_NAME" || error_exit "Failed to navigate into the new worktree directory."
     
-    # Copy .env file if it exists
+    # Smart .env handling with Docker volume sharing
     if [ -f "../.env" ]; then
         cp ../.env .
         info_message "✅ Copied .env file"
+    elif [ -f "../docker-compose.yml" ] || [ -f "../compose.yaml" ]; then
+        # No .env but Docker detected - auto-create for volume sharing
+        PROJECT_NAME=$(basename $(cd .. && pwd) | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')
+        echo "COMPOSE_PROJECT_NAME=$PROJECT_NAME" > .env
+        cp .env ../.env  # Save to parent for future worktrees
+        info_message "✅ Docker detected - created .env for volume sharing (project: $PROJECT_NAME)"
     fi
     
     echo "=============================================="
